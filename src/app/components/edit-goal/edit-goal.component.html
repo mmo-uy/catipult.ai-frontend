@@ -1,0 +1,114 @@
+<div class="d-flex align-items-center justify-content-start">
+  <button
+    type="button"
+    class="btn btn-outline-primary float-button transparent"
+    routerLink="/"
+  >
+    <i class="bi bi-arrow-left text-black"></i>
+  </button>
+</div>
+<div class="container-fluid">
+  <h4>Edit Goal</h4>
+  @if (error) {
+  <div class="d-flex justify-content-center align-items-center">
+    An error occurred
+  </div>
+  } @else {
+  <form [formGroup]="goalForm" (ngSubmit)="onEdit()" name="goalForm">
+    <div class="mb-3 form-floating">
+      <input
+        required
+        id="title"
+        name="title"
+        placeholder="Goal title..."
+        formControlName="title"
+        [ngClass]="{
+          'is-invalid':
+            goalForm.controls['title'].dirty &&
+            goalForm.controls['title'].errors
+        }"
+        class="form-control"
+      />
+      <label for="floatingTextarea">Title</label>
+      @if (goalForm.controls['title'].errors) {
+      @if(goalForm.controls['title'].errors['required']){
+      <div class="invalid-feedback">* Required field</div>
+      } }
+    </div>
+    <div class="mb-3 form-floating">
+      <input
+        [ngClass]="{
+          'is-invalid':
+            goalForm.dirty && goalForm.controls['description'].errors
+        }"
+        class="form-control"
+        id="description"
+        name="description"
+        placeholder="Goal description..."
+        formControlName="description"
+        aria-describedby="descriptionHelpBlock"
+        required
+      />
+      <label for="floatingTextarea">Description</label>
+      @if (goalForm.controls['description'].errors) {
+      @if(goalForm.controls['description'].errors['required']){
+      <div class="invalid-feedback">* Required field</div>
+      } @else {
+      <div class="invalid-feedback">Pattern: [action] [frequency]</div>
+      } }
+    </div>
+    <div class="input-group mb-3">
+      <label class="input-group-text" for="category">Category</label>
+      <select
+        aria-label="category"
+        id="category"
+        name="category"
+        formControlName="category"
+        class="form-select"
+      >
+        <option [ngValue]="null" disabled>Select One</option>
+        @for (c of categoriesList; track c; let i = $index){
+        <option [selected]="c === selectedCategory" [value]="c">
+          {{ c }}
+        </option>
+        }
+      </select>
+
+      @if (goalForm.controls['category'].errors) {
+      @if(goalForm.controls['category'].errors['required'] ){
+      <div class="invalid-feedback">* Required field</div>
+      } }
+    </div>
+    <div class="input-group mb-3">
+      <label class="input-group-text" for="deadline">Deadline</label>
+      <input
+        id="deadline"
+        type="date"
+        class="form-control"
+        formControlName="deadline"
+      />
+    </div>
+    <div class="mb-3">
+      <input
+        type="checkbox"
+        class="btn-check"
+        id="btn-check-outlined"
+        autocomplete="off"
+        formControlName="completed"
+      />
+      <label class="btn btn-outline-primary" for="btn-check-outlined">{{
+        goalForm.get("completed") ? "Completed" : "Not Completed"
+      }}</label>
+    </div>
+    <div class="mb3 d-flex justify-content-end">
+      <button
+        type="submit"
+        class="btn btn-success btn-lg"
+        [disabled]="!goalForm.valid || !goalForm.dirty"
+      >
+        Edit Goal
+      </button>
+    </div>
+  </form>
+  }
+</div>

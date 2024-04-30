@@ -1,0 +1,120 @@
+<!-- TODO move to components -->
+<div class="container-fluid">
+  <div class="d-flex align-items-center justify-content-end mb-3">
+    <div>
+      <button
+        type="button"
+        class="btn btn-primary float-button"
+        (click)="addModal.openModal()"
+      >
+        <i class="bi bi-plus light"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="d-flex justify-content-between">
+        <h4>All Goals</h4>
+        <!-- TODO move to components -->
+        @if (filtersApplied) {
+        <button class="btn btn-link ml-2" (click)="clearFilters()">
+          Clear Filters
+        </button>
+        }
+      </div>
+      <!-- TODO move to components -->
+      <div class="container-fluid overflow-y-auto">
+        <label for="basic-url" class="form-label"
+          >Filters <i class="bi bi-filter"></i
+        ></label>
+        <div class="row">
+          <!-- Filter by Category -->
+          <div class="col-lg-4 col-12 mb-3">
+            <label for="filters-by-category" class="form-label"
+              >Filter by category:</label
+            >
+            <div class="input-group mb-3">
+              <select
+                aria-label="category"
+                id="category"
+                name="category"
+                class="form-select"
+                [(ngModel)]="selectedCategory"
+                (change)="filterGoalsByCategory($event)"
+              >
+                <option [ngValue]="null" disabled>Select One</option>
+                @for (c of categoriesList; track c; let i = $index){
+                <option [selected]="c === selectedCategory" [value]="c">
+                  {{ c }}
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+          <!-- Search Input -->
+          <div class="col-lg-4 col-12 mb-3">
+            <label for="search-by-input" class="form-label"
+              >Search by title/description</label
+            >
+            <div class="input-group mb-3">
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search"
+                [(ngModel)]="searchQuery"
+                aria-label="Search"
+                (input)="searchGoals($event)"
+              />
+            </div>
+          </div>
+          <!-- Sort By -->
+          <div class="col-lg-4 col-12 mb-3">
+            <label for="sort-by" class="form-label">Sort by</label>
+            <div class="input-group mb-3">
+              <select
+                aria-label="sortBy"
+                class="form-select"
+                [id]="sortBy"
+                class="form-select"
+                [(ngModel)]="sortBy"
+                (change)="sortGoalsBy(sortBy)"
+              >
+                <option [ngValue]="null" disabled>Select One</option>
+                <option value="title">Title</option>
+                <option value="category">Category</option>
+                <option value="deadline">Deadline</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- TODO move to components -->
+      <div class="container-fluid overflow-y-auto">
+        @if(filteredGoals?.length === 0){
+        <div class="d-flex justify-content-center align-items-center">
+          There's any Goal here!
+        </div>
+        }
+        <div class="row">
+          @for (goal of filteredGoals; track goal.id; let i = $index){
+          <div class="col-12 col-xl-6">
+            <app-single-goal
+              [goal]="goal"
+              (goalDeleted)="onDeleteGoal($event)"
+            ></app-single-goal>
+          </div>
+
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-delete-modal
+  #deleteModal
+  (cancelEvent)="onCancel()"
+  (confirmEvent)="onConfirm()"
+/>
+<app-add-modal #addModal (saveEvent)="onSave()" />

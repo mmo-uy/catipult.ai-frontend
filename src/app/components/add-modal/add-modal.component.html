@@ -1,0 +1,130 @@
+<div
+  class="modal fade"
+  #addModal
+  tabindex="-1"
+  role="dialog"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">New goal</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="goalForm" (ngSubmit)="onSave()" name="goalForm">
+          <div class="mb-3 form-floating">
+            <input
+              required
+              id="title"
+              name="title"
+              placeholder="Goal title..."
+              formControlName="title"
+              [ngClass]="{
+                'is-invalid':
+                  goalForm.controls['title'].dirty &&
+                  goalForm.controls['title'].errors,
+                'is-valid': !goalForm.controls['title'].errors
+              }"
+              class="form-control"
+            />
+            <label for="floatingTextarea">Title</label>
+            @if (goalForm.controls['title'].errors) {
+            @if(goalForm.controls['title'].errors['required']){
+            <div class="invalid-feedback">* Required field</div>
+            } }
+          </div>
+          <div class="mb-3 form-floating">
+            <input
+              [ngClass]="{
+                'is-invalid':
+                  goalForm.dirty && goalForm.controls['description'].errors,
+                'is-valid': !goalForm.controls['description'].errors
+              }"
+              class="form-control"
+              id="description"
+              name="description"
+              placeholder="Goal description..."
+              formControlName="description"
+              aria-describedby="descriptionHelpBlock"
+              required
+            />
+            <label for="floatingTextarea">Description</label>
+            @if (goalForm.controls['description'].errors) { @if
+            (goalForm.controls['description'].errors['required']){
+            <div class="invalid-feedback">* Required field</div>
+            } @else {
+            <div class="invalid-feedback">Pattern: [action] [frequency]</div>
+            } }
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="category">Category</label>
+            <select
+              aria-label="category"
+              id="category"
+              name="category"
+              formControlName="category"
+              class="form-select"
+              [ngClass]="{
+                'is-invalid':
+                  (goalForm.dirty && goalForm.controls['category'].errors) ||
+                  selectedCategory === null,
+                'is-valid': !goalForm.controls['category'].errors
+              }"
+            >
+              <option [ngValue]="null" disabled>Select One</option>
+              @for (c of categoriesList; track c; let i = $index){
+              <option [selected]="c === selectedCategory" [value]="c">
+                {{ c }}
+              </option>
+              }
+            </select>
+            <div class="invalid-feedback">* Required</div>
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="deadline">Deadline</label>
+            <input
+              id="deadline"
+              type="date"
+              class="form-control"
+              formControlName="deadline"
+            />
+          </div>
+          <div class="mb-3">
+            <input
+              type="checkbox"
+              class="btn-check"
+              id="btn-check-outlined"
+              autocomplete="off"
+              formControlName="completed"
+            />
+            <label class="btn btn-outline-primary" for="btn-check-outlined">{{
+              goalForm.get("completed") ? "Completed" : "Not Completed"
+            }}</label>
+          </div>
+          <div class="mb3 d-flex justify-content-end">
+            <button
+              type="submit"
+              class="btn btn-success"
+              [disabled]="!goalForm.valid || !goalForm.dirty"
+            >
+              Save Goal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

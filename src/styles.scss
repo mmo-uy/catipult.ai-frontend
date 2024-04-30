@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootstrap/scss/bootstrap-utilities";
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/containers";
+@import "ngx-toastr/toastr-bs5-alert";
+
+.float-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+i {
+  font-size: 1.25rem;
+  color: black;
+}
+button {
+  i.light {
+    color: white;
+  }
+}
+.transparent {
+  border: none;
+  background: transparent;
+}
+button.transparent:hover,
+button.transparent:focus,
+button.transparent:active,
+button.transparent:focus-visible {
+  // box-shadow: none !important;
+  // -webkit-box-shadow: none !important;
+  // box-shadow: none !important;
+  // outline: none !important;
+  background: transparent !important;
+}
+.pattern-help-block {
+  font-size: 0.75em;
+  color: black;
+  font-weight: bold;
+}
